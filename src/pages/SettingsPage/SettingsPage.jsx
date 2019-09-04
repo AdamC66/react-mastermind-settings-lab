@@ -6,6 +6,10 @@ const SettingsPage = (props) => {
     <div>
       <Link to='/'>HOME</Link>
       <h1>Settings Page</h1>
+      <h2>Difficulty</h2>
+      <button className='btn btn-default' onClick={()=>props.handleSetDifficulty('Easy')}> Easy </button>
+      <button className='btn btn-default' onClick={()=>props.handleSetDifficulty('Medium')}> Medium </button>
+      <button className='btn btn-default'onClick={()=>props.handleSetDifficulty('Hard')}> Hard </button>
     </div>
   );
 };

@@ -11,7 +11,8 @@ class App extends Component {
   INITIAL_STATE = {
     selColorIdx: 0,
     guesses: [this.getNewGuess()],
-    code: this.genCode()
+    code: this.genCode(),
+    difficulty: 'Easy'
   }
 
   state = this.INITIAL_STATE
@@ -126,12 +127,15 @@ class App extends Component {
       guesses: guessesCopy
     });
   }
-
+  handleSetDifficulty = (difficulty) => {
+    this.setState({difficulty})
+  }
   render() {
     let winTries = this.getWinTries();
     return (
       <div className="App">
         <header className='App-header-footer'>R E A C T &nbsp;&nbsp;&nbsp;  M A S T E R M I N D</header>
+        <h1>{this.state.difficulty}</h1>
         <Switch>
           <Route exact path='/' render={() =>
             <GamePage
@@ -146,7 +150,7 @@ class App extends Component {
             />
           } />
           <Route exact path='/settings' render={props =>
-            <SettingsPage {...props} />
+            <SettingsPage {...props} handleSetDifficulty={this.handleSetDifficulty} />
           } />
         </Switch>
       </div>
