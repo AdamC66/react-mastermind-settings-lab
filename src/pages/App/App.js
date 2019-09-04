@@ -4,7 +4,11 @@ import GamePage from '../../pages/GamePage/GamePage';
 import { Route, Switch } from 'react-router-dom';
 import SettingsPage from '../SettingsPage/SettingsPage';
 
-const colors = ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'];
+const colors ={
+  Easy: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'],
+  Medium:['#7CCCE5', '#FDE47F', '#E04644', '#B576AD','#54d18a'],
+  Hard: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD','#54d18a','#86918b'],
+};
 
 class App extends Component {
 
@@ -12,10 +16,10 @@ class App extends Component {
     selColorIdx: 0,
     guesses: [this.getNewGuess()],
     code: this.genCode(),
-    difficulty: 'Easy'
   }
 
-  state = this.INITIAL_STATE
+  state = {difficulty: 'Easy',
+     ...this.INITIAL_STATE}
 
   getNewGuess() {
     return {
@@ -28,8 +32,12 @@ class App extends Component {
   }
 
   genCode() {
-    return new Array(4).fill().map(dummy => Math.floor(Math.random() * 4));
-  }
+      let numColors = this.state && colors[this.state.difficulty].length;
+      numColors = numColors || 4;
+      return new Array(4).fill().map(dummy => Math.floor(Math.random() * numColors));
+     
+    }
+    
 
   getWinTries() {
     // if winner, return num guesses, otherwise 0 (no winner)
@@ -128,7 +136,7 @@ class App extends Component {
     });
   }
   handleSetDifficulty = (difficulty) => {
-    this.setState({difficulty})
+    this.setState({difficulty}, () => this.handleNewGameClick())
   }
   render() {
     let winTries = this.getWinTries();
@@ -140,7 +148,7 @@ class App extends Component {
           <Route exact path='/' render={() =>
             <GamePage
               winTries={winTries}
-              colors={colors}
+              colors={colors[this.state.difficulty]}
               selColorIdx={this.state.selColorIdx}
               guesses={this.state.guesses}
               handleColorSelection={this.handleColorSelection}
